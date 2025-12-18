@@ -16,7 +16,7 @@ export default function Register() {
                 username : name , email , password,
             })
             alert("Registered Successfully")
-            navigate('/*')
+            navigate('/')
         } catch (error) {
             alert(error.response?.data?.message || "Registration failed")
         }

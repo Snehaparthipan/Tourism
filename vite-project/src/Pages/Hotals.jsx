@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../CSS/search.css";
+import API from "../Utills/API";
 
 export default function Hotals() {
   const [city, setCity] = useState("");
@@ -15,8 +16,8 @@ export default function Hotals() {
     }
 
     const timer = setTimeout(() => {
-      axios
-        .get(`http://localhost:5000/api/hotel?search=${city}`)
+      API
+        .get(`/hotel?search=${city}`)
         .then(res => setHotels(res.data));
     }, 300);
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../CSS/search.css";
 import { useNavigate } from "react-router-dom";
+import API from "../Utills/API";
 
 export default function Flight() {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ export default function Flight() {
     }
 
     const timer = setTimeout(() => {
-      axios
-        .get(`http://localhost:5000/api/places?search=${from}`)
+      API
+        .get(`/places?search=${from}`)
         .then(res => setFromList(res.data))
         .catch(err => console.log(err));
     }, 300);
@@ -47,8 +48,8 @@ export default function Flight() {
     }
 
     const timer = setTimeout(() => {
-      axios
-        .get(`http://localhost:5000/api/places?search=${to}`)
+      API
+        .get(`places?search=${to}`)
         .then(res => setToList(res.data))
         .catch(err => console.log(err));
     }, 300);

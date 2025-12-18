@@ -50,6 +50,24 @@ const searchCars=async (req, res) => {
   }
 }
 
+//for train
+
+const Train = require("../Model/Train");
+
+const searchTrain = async (req, res) => {
+  try {
+    const search = req.query.search || "";
+
+    const trainPlaces = await Train.find({
+      name: { $regex: search, $options: "i" }
+    }).limit(10);
+
+    res.json(trainPlaces);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+}
 
 
-module.exports={searchPlace,searchHotel,searchCars}
+
+module.exports={searchPlace,searchHotel,searchCars,searchTrain}
