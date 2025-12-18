@@ -23,7 +23,7 @@ export default function Train() {
     adults: 1,
     children: 0,
     infants: 0,
-    class: "Maruti Suzuki"
+    class: "Economy"
   });
   useEffect(() => {
     if (!from || fromSelected) {
@@ -33,7 +33,7 @@ export default function Train() {
 
     const timer = setTimeout(() => {
       API
-        .get(`/train?search=${from}`)
+        .get(`/trains?search=${from}`)
         .then(res => setFromList(res.data))
         .catch(err => console.log(err));
     }, 300);
@@ -49,7 +49,7 @@ export default function Train() {
 
     const timer = setTimeout(() => {
       API
-        .get(`train?search=${to}`)
+        .get(`/trains?search=${to}`)
         .then(res => setToList(res.data))
         .catch(err => console.log(err));
     }, 300);
@@ -92,7 +92,7 @@ export default function Train() {
             <label>From</label>
             <input
               value={from}
-              placeholder="Enter Pickup City"
+              placeholder="City or airport"
               onChange={(e) => {
                 setFrom(e.target.value);
                 setFromSelected(false); 
@@ -122,7 +122,7 @@ export default function Train() {
             <label>To</label>
             <input
               value={to}
-              placeholder="Enter Drop city"
+              placeholder="City or airport"
               onChange={(e) => {
                 setTo(e.target.value);
                 setToSelected(false);
@@ -158,108 +158,107 @@ export default function Train() {
   />
 </div>
 
-<div
-                            className="box"
-                            onClick={() => setOpenTravellers(!openTravellers)}
-                        >
-                            <label>Travellers & Class</label>
-                            <p className="fake-input">
-                                {totalTravellers} Traveller · {travellers.class}
-                            </p>
 
-                            {openTravellers && (
-                                <div className="traveller-dropdown" onClick={(e) => e.stopPropagation()}>
-                                    {/* Adults */}
-                                    <div className="row">
-                                        <span>Adults</span>
-                                        <div className="counter">
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({
-                                                        ...p,
-                                                        adults: Math.max(1, p.adults - 1)
-                                                    }))
-                                                }
-                                            >−</button>
-                                            <span>{travellers.adults}</span>
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({ ...p, adults: p.adults + 1 }))
-                                                }
-                                            >+</button>
-                                        </div>
-                                    </div>
+          <div
+              className="box"
+              onClick={() => setOpenTravellers(!openTravellers)}
+            >
+              <label>Travellers & Class</label>
+              <p className="fake-input">
+                {totalTravellers} Traveller · {travellers.class}
+              </p>
 
-                                    {/* Children */}
-                                    <div className="row">
-                                        <span>Children</span>
-                                        <div className="counter">
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({
-                                                        ...p,
-                                                        children: Math.max(0, p.children - 1)
-                                                    }))
-                                                }
-                                            >−</button>
-                                            <span>{travellers.children}</span>
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({ ...p, children: p.children + 1 }))
-                                                }
-                                            >+</button>
-                                        </div>
-                                    </div>
-
-                                    {/* Infants */}
-                                    <div className="row">
-                                        <span>Infants</span>
-                                        <div className="counter">
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({
-                                                        ...p,
-                                                        infants: Math.max(0, p.infants - 1)
-                                                    }))
-                                                }
-                                            >−</button>
-                                            <span>{travellers.infants}</span>
-                                            <button
-                                                onClick={() =>
-                                                    setTravellers(p => ({ ...p, infants: p.infants + 1 }))
-                                                }
-                                            >+</button>
-                                        </div>
-                                    </div>
-
-                                    {/* CLASS */}
-                                    <div className="class-select">
-                                        <label>Class</label>
-                                        <select
-                                            value={travellers.class}
-                                            onChange={(e) =>
-                                                setTravellers(p => ({ ...p, class: e.target.value }))
-                                            }
-                                        >
-                                            <option>12-Seater Tempo</option>
-                                            <option>9-Seater Tempo</option>
-                                            <option>5-Seater Hyundai Creta</option>
-                                            <option>4-Seater Maruti Suzuki S</option>
-                                            <option>3-Seater Toyota Sienna</option>
-                                        </select>
-                                    </div>
-
-                                    <button
-                                        className="done-btn"
-                                        onClick={() => setOpenTravellers(false)}
-                                    >
-                                        Done
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+              {openTravellers && (
+                <div className="traveller-dropdown" onClick={(e) => e.stopPropagation()}>
+                  {/* Adults */}
+                  <div className="row">
+                    <span>Adults</span>
+                    <div className="counter">
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({
+                            ...p,
+                            adults: Math.max(1, p.adults - 1)
+                          }))
+                        }
+                      >−</button>
+                      <span>{travellers.adults}</span>
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({ ...p, adults: p.adults + 1 }))
+                        }
+                      >+</button>
                     </div>
+                  </div>
 
+                  {/* Children */}
+                  <div className="row">
+                    <span>Children</span>
+                    <div className="counter">
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({
+                            ...p,
+                            children: Math.max(0, p.children - 1)
+                          }))
+                        }
+                      >−</button>
+                      <span>{travellers.children}</span>
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({ ...p, children: p.children + 1 }))
+                        }
+                      >+</button>
+                    </div>
+                  </div>
+
+                  {/* Infants */}
+                  <div className="row">
+                    <span>Infants</span>
+                    <div className="counter">
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({
+                            ...p,
+                            infants: Math.max(0, p.infants - 1)
+                          }))
+                        }
+                      >−</button>
+                      <span>{travellers.infants}</span>
+                      <button
+                        onClick={() =>
+                          setTravellers(p => ({ ...p, infants: p.infants + 1 }))
+                        }
+                      >+</button>
+                    </div>
+                  </div>
+
+                  {/* CLASS */}
+                  <div className="class-select">
+                    <label>Class</label>
+                    <select
+                      value={travellers.class}
+                      onChange={(e) =>
+                        setTravellers(p => ({ ...p, class: e.target.value }))
+                      }
+                    >
+                      <option>Economy</option>
+                      <option>Premium Economy</option>
+                      <option>Business</option>
+                      <option>First</option>
+                    </select>
+                  </div>
+
+                  <button
+                    className="done-btn"
+                    onClick={() => setOpenTravellers(false)}
+                  >
+                    Done
+                  </button>
+                </div>
+              )}
+            </div>
+        </div>
 
         <button className="bookbtn" onClick={handleBook}>
           Book Now

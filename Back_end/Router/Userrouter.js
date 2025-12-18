@@ -19,7 +19,7 @@ router.get("/flight",flight)
 
 router.get("/places",searchPlace)
 router.get("/hotel",searchHotel)
-router.get("/train",searchTrain)
+router.get("/trains",searchTrain)
 router.get('/cars',searchCars)
 
 router.post('/register',Register)
