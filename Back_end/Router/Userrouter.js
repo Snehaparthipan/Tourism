@@ -2,6 +2,7 @@ const express=require("express")
 const {postUser,getuser,deleteuser,putUser,flight,postflight}=require("../Controller/Usercontroller")
 const {searchPlace, searchHotel, searchCars,searchTrain}=require("../Controller/BookingController")
 const{ Register, Loginuser }=require('../Controller/Logincontroller')
+const{ getSeats, bookSeats  }=require("../Controller/SeatController")
 
 const{VerifyToken}=require("../Middlewere/token")
 
@@ -31,5 +32,10 @@ router.get('/test' , VerifyToken , (req , res)=>{
         userId : req.user.id
     })
 })
+
+
+//seat selection
+router.get("/seats/:showId", getSeats)
+router.post("/seats/book",bookSeats)
 
 module.exports=router

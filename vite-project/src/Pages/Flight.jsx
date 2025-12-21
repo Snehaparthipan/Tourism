@@ -74,7 +74,7 @@ export default function Flight() {
       return;
     }
 
-    navigate("/book", {
+    navigate("/seats/101", {
       state: { from, to, travellers }
     });
   };

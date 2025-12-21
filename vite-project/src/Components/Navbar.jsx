@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom";
 import Home from "../Pages/Home";
 import '../CSS/nav.css'
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 

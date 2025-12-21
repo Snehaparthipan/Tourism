@@ -11,12 +11,13 @@ import Register from "./Pages/Register"
 import About from "./Pages/About"
 import Tour from "./Pages/Tour"
 import './App.css'
+import SeatSelection from "./Pages/SeatSelection"
 
 function App() {
   return (
     <div className="body">
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <Routes>
         <Route path="/" element={<Login />} />
@@ -34,6 +35,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/tour" element={<Tour />} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
+        <Route path="/seats/:id" element={<SeatSelection/>}/>
       </Routes>
     </BrowserRouter>
     </div>
