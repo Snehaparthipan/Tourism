@@ -10,7 +10,7 @@ const Navbar = () => {
     <>
       <nav className="navbar">
         <div className="navleft">
-          <table><tr><td><img src="https://i.postimg.cc/fWxcX2ZC/Untitled-design-removebg-preview.png" height={100} alt="" /></td><td><h2 className="logo" style={{ fontFamily: "-apple-system" }}>VISTA TRIP</h2></td></tr></table>
+          <table><tbody><tr><td><img src="https://i.postimg.cc/fWxcX2ZC/Untitled-design-removebg-preview.png" height={100} alt="" /></td><td><h2 className="logo" style={{ fontFamily: "-apple-system" }}>VISTA TRIP</h2></td></tr></tbody></table>
         </div>
         <nav className={`navcenter ${open ? "open" : ""}`}>
           <Link to="/home">Home</Link>

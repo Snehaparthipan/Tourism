@@ -1,0 +1,62 @@
+.seat-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.plane {
+  display: inline-block;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.seat {
+  width: 45px;
+  height: 45px;
+  margin: 3px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.seat:hover {
+  background: #e0f0ff;
+}
+
+.selected {
+  background: #4caf50;
+  color: white;
+}
+
+.booked {
+  background: #999;
+  color: white;
+  cursor: not-allowed;
+}
+
+.aisle {
+  width: 30px;
+}
+
+.confirm-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.confirm-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}

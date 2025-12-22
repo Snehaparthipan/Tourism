@@ -1,31 +1,40 @@
-const Seat = require("../Model/Seat")
+const Seat = require("../Model/Slot");
+
+// GET seats for a place
 const getSeats = async (req, res) => {
   try {
-    const { showId } = req.params;
-    const seats = await Seat.find({ showId });
-    res.status(200).json(seats);
+    const seats = await Seat.find({ placeId: req.params.placeId });
+    res.json(seats);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch seats" });
   }
 };
 
+
 const bookSeats = async (req, res) => {
-  try {
-    const { showId, seats } = req.body;
+  const { placeId, seats } = req.body;
 
-    if (!showId || !seats || seats.length === 0) {
-      return res.status(400).json({ message: "Invalid data" });
-    }
-
-    await Seat.updateMany(
-      { showId, seatNumber: { $in: seats }, isBooked: false },
-      { $set: { isBooked: true } }
-    );
-
-    res.status(200).json({ message: "Seats booked successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Booking failed" });
+  // VALIDATION
+  if (!placeId || !Array.isArray(seats) || seats.length === 0) {
+    return res.status(400).json({ message: "Invalid data" });
   }
+
+  // BOOK SEATS
+  const result = await Seat.updateMany(
+    {
+      placeId,
+      seatNumber: { $in: seats },
+      isBooked: false
+    },
+    { $set: { isBooked: true } }
+  );
+
+  if (result.modifiedCount === 0) {
+    return res.status(400).json({ message: "Seats already booked" });
+  }
+
+  res.json({ message: "Booking successful" });
 };
 
-module.exports = { getSeats, bookSeats }
+
+module.exports = { getSeats, bookSeats };

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const seatSchema = new mongoose.Schema({
-  showId: {
+  placeId: {
     type: String,
     required: true
   },
@@ -15,4 +15,4 @@ const seatSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Seat", seatSchema);
+module.exports = mongoose.model("Slot", seatSchema);

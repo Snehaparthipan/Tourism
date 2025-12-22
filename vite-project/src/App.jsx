@@ -35,7 +35,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/tour" element={<Tour />} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
-        <Route path="/seats/:id" element={<SeatSelection/>}/>
+        <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />
       </Routes>
     </BrowserRouter>
     </div>
