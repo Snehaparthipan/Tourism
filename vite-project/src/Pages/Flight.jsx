@@ -34,7 +34,7 @@ export default function Flight() {
     const timer = setTimeout(() => {
       API.get(`/places?search=${from}`)
         .then(res => setFromList(res.data))
-        .catch(err => console.log(err));
+        .catch(console.log);
     }, 300);
 
     return () => clearTimeout(timer);
@@ -50,7 +50,7 @@ export default function Flight() {
     const timer = setTimeout(() => {
       API.get(`/places?search=${to}`)
         .then(res => setToList(res.data))
-        .catch(err => console.log(err));
+        .catch(console.log);
     }, 300);
 
     return () => clearTimeout(timer);
@@ -74,11 +74,9 @@ export default function Flight() {
       return;
     }
 
-    // TEMP placeId (later you’ll get from backend)
-    const placeId = "101";
+    const placeId = "101"; // demo id
 
-    navigate(`/SeatSelection/${placeId}`
-, {
+    navigate(`/SeatSelection/${placeId}`, {
       state: { from, to, date, travellers }
     });
   };
@@ -164,13 +162,15 @@ export default function Flight() {
           </div>
 
           {/* TRAVELLERS */}
-          <div className="box" onClick={() => setOpenTravellers(!openTravellers)}>
+          <div
+            className="box"
+            onClick={() => setOpenTravellers(!openTravellers)}
+          >
             <label>Travellers & Class</label>
             <p className="fake-input">
               {totalTravellers} Traveller · {travellers.class}
             </p>
           </div>
-
         </div>
 
         <button className="bookbtn" onClick={handleBook}>

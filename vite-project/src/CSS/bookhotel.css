@@ -1,0 +1,59 @@
+.hotel-booking {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.hotel-info {
+  background: #f5f7fa;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.room-list {
+  display: flex;
+  gap: 10px;
+}
+
+.room {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+}
+
+.room.active {
+  background: #0077ff;
+  color: white;
+}
+
+.confirm-btn {
+  background: #0077ff;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* Dialog */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}

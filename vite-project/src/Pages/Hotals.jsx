@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../CSS/search.css";
 import API from "../Utills/API";
 
-export default function Hotals() {
+export default function Hotels() {
   const [city, setCity] = useState("");
   const [hotels, setHotels] = useState([]);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,9 +17,9 @@ export default function Hotals() {
     }
 
     const timer = setTimeout(() => {
-      API
-        .get(`/hotel?search=${city}`)
-        .then(res => setHotels(res.data));
+      API.get(`/hotel?search=${city}`)
+        .then(res => setHotels(res.data))
+        .catch(console.log);
     }, 300);
 
     return () => clearTimeout(timer);
@@ -26,15 +27,15 @@ export default function Hotals() {
 
   return (
     <div className="search-wrapper">
-      <div className="search-card" style={{display:"flex"}}>
-        <div className="box" >
+      <div className="search-card" style={{ display: "flex", gap: "10px" }}>
+        
+        <div className="box">
           <label>City</label>
           <input
             value={city}
             placeholder="Enter city"
             onChange={(e) => setCity(e.target.value)}
           />
-          
 
           {hotels.length > 0 && (
             <ul className="dropdown">
@@ -42,7 +43,9 @@ export default function Hotals() {
                 <li
                   key={hotel._id}
                   onClick={() =>
-                    navigate("/bookhotel", { state: { hotel } })
+                    navigate("/bookhotel", {
+                      state: { hotel, checkIn, checkOut }
+                    })
                   }
                 >
                   {hotel.name}
@@ -51,7 +54,17 @@ export default function Hotals() {
             </ul>
           )}
         </div>
-        <div className="box"><input type="date" /></div>
+
+        <div className="box">
+          <label>Check-in</label>
+          <input type="date" value={checkIn} onChange={e => setCheckIn(e.target.value)} />
+        </div>
+
+        <div className="box">
+          <label>Check-out</label>
+          <input type="date" value={checkOut} onChange={e => setCheckOut(e.target.value)} />
+        </div>
+
       </div>
     </div>
   );

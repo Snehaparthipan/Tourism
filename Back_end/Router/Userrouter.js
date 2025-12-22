@@ -3,7 +3,7 @@ const {postUser,getuser,deleteuser,putUser,flight,postflight}=require("../Contro
 const {searchPlace, searchHotel, searchCars,searchTrain}=require("../Controller/BookingController")
 const{ Register, Loginuser }=require('../Controller/Logincontroller')
 const{ getSeats,bookSeats }=require("../Controller/SeatController")
-
+const { getRooms, bookRoom } = require("../Controller/Roomcontroller");
 const{VerifyToken}=require("../Middlewere/token")
 
 const router=express.Router()
@@ -33,9 +33,13 @@ router.get('/test' , VerifyToken , (req , res)=>{
     })
 })
 
-
+//for flight seats
 router.get("/seats/:placeId", getSeats);
 router.post("/seats/book", bookSeats);
 
+//for hotal room 
+
+router.get("/rooms/:hotelId", getRooms);
+router.post("/rooms/book", bookRoom);
 
 module.exports=router
