@@ -1,5 +1,5 @@
-import { useEffect, useState ,Link} from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import API from "../Utills/API";
 import "../CSS/slot.css";
 
@@ -10,6 +10,7 @@ const right = ["D", "E", "F"];
 export default function SeatSelection() {
   const { placeId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { from, to, date, travellers } = location.state || {};
 
   const [bookedSeats, setBookedSeats] = useState([]);
@@ -17,14 +18,24 @@ export default function SeatSelection() {
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("token");
+
+  // redirect if not logged in
   useEffect(() => {
-    API.get(`/seats/${placeId}`)
-      .then(res => {
-        const booked = res.data
-          .filter(s => s.isBooked)
-          .map(s => s.seatNumber);
-        setBookedSeats(booked);
-      });
+    if (!token) {
+      alert("You must login first!");
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  // fetch seats
+  useEffect(() => {
+    API.get(`/seats/${placeId}`).then(res => {
+      const booked = res.data
+        .filter(s => s.isBooked)
+        .map(s => s.seatNumber);
+      setBookedSeats(booked);
+    });
   }, [placeId]);
 
   const toggleSeat = (seat) => {
@@ -37,14 +48,38 @@ export default function SeatSelection() {
   };
 
   const confirmBooking = async () => {
+    if (!selectedSeats.length) return;
+
     try {
-      setLoading(true);
-      await API.post("/seats/book", {
-        placeId,
-        seats: selectedSeats
-      });
-      setOpenDialog(false);
+      setLoading(true)
+
+      await API.post(
+  "/seats/book",
+  {
+    placeId,
+    seats: selectedSeats,
+    from,
+    to,
+    date
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
+);
+
       alert("Booking Successful ✈️");
+      setOpenDialog(false);
+
+      // refresh booked seats
+      const res = await API.get(`/seats/${placeId}`);
+      const booked = res.data
+        .filter(s => s.isBooked)
+        .map(s => s.seatNumber);
+      setBookedSeats(booked);
+      setSelectedSeats([]);
+
     } catch (err) {
       alert(err.response?.data?.message || "Booking failed");
     } finally {
@@ -81,6 +116,7 @@ export default function SeatSelection() {
                     ${bookedSeats.includes(seat) ? "booked" : ""}
                     ${selectedSeats.includes(seat) ? "selected" : ""}
                   `}
+                  disabled={bookedSeats.includes(seat)}
                   onClick={() => toggleSeat(seat)}
                 >
                   {seat}
@@ -99,6 +135,7 @@ export default function SeatSelection() {
                     ${bookedSeats.includes(seat) ? "booked" : ""}
                     ${selectedSeats.includes(seat) ? "selected" : ""}
                   `}
+                  disabled={bookedSeats.includes(seat)}
                   onClick={() => toggleSeat(seat)}
                 >
                   {seat}
@@ -114,30 +151,29 @@ export default function SeatSelection() {
         <p>
           Selected Seats: <strong>{selectedSeats.join(", ") || "None"}</strong>
         </p>
+        <p>
+          Travellers: <strong>{travellers?.adults} Adult</strong> • <strong>{travellers?.class}</strong>
+        </p>
         <button
           className="continue-btn"
-          disabled={!selectedSeats.length}
+          disabled={!selectedSeats.length || loading}
           onClick={() => setOpenDialog(true)}
         >
-          Continue
+          {loading ? "Booking..." : "Continue"}
         </button>
-        
       </div>
-      
 
       {/* MODAL */}
       {openDialog && (
         <div className="modal-overlay">
           <div className="modal-card">
-
             <h3>Confirm Your Booking</h3>
-
             <div className="summary">
-              <p><span>From</span>{from}</p>
-              <p><span>To</span>{to}</p>
-              <p><span>Date</span>{date}</p>
-              <p><span>Seats</span>{selectedSeats.join(", ")}</p>
-              <p><span>Class</span>{travellers?.class}</p>
+              <p><span>From</span> {from}</p>
+              <p><span>To</span> {to}</p>
+              <p><span>Date</span> {date}</p>
+              <p><span>Seats</span> {selectedSeats.join(", ")}</p>
+              <p><span>Class</span> {travellers?.class}</p>
             </div>
 
             <div className="modal-actions">
@@ -148,11 +184,10 @@ export default function SeatSelection() {
                 {loading ? "Booking..." : "Confirm"}
               </button>
             </div>
-
           </div>
         </div>
       )}
+
     </div>
   );
 }
-

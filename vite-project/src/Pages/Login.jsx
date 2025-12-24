@@ -11,24 +11,31 @@ export default function Login() {
     const navigate = useNavigate();
 
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError("");
-        try {
-            const { data } = await API.post("/login", { email, password });
-            localStorage.setItem(
-  "user",
-  JSON.stringify({
-    id: data.id,
-        username: data.username,
-        email: data.email
-  })
-);
-            navigate("/home");
-        } catch (error) {
-            setError(error.response?.data?.message || "Login failed");
-        }
-    };
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  try {
+    const { data } = await API.post("/login", { email, password });
+
+    // store token
+    localStorage.setItem("token", data.token);
+
+    // store user (FROM data.user)
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: data.user.id,
+        username: data.user.username,
+        email: data.user.email
+      })
+    );
+
+    navigate("/home");
+  } catch (error) {
+    setError(error.response?.data?.message || "Login failed");
+  }
+};
 
 
     return (

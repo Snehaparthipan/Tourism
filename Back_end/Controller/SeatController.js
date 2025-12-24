@@ -3,45 +3,52 @@ const Booking = require("../Model/Booking");
 
 // GET seats for a place
 const getSeats = async (req, res) => {
-  try {
-    const seats = await Seat.find({ placeId: req.params.placeId });
-    res.json(seats);
+   try {
+    const bookings = await Booking.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    res.json(bookings);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch seats" });
+    res.status(500).json({ message: "Failed to fetch bookings" });
   }
-};
+}
 
 
 const bookSeats = async (req, res) => {
-  const { placeId, seats } = req.body;
-  const userId = req.user.id;
+  try {
+    const { placeId, seats, from, to, date } = req.body;
+    const userId = req.user.id;
 
-  if (!placeId || !Array.isArray(seats) || seats.length === 0) {
-    return res.status(400).json({ message: "Invalid data" });
-  }
+    if (!placeId || !seats?.length || !from || !to || !date) {
+      return res.status(400).json({ message: "Missing booking data" });
+    }
 
-  const result = await Seat.updateMany(
-    {
+    const result = await Seat.updateMany(
+      {
+        placeId,
+        seatNumber: { $in: seats },
+        isBooked: false
+      },
+      { $set: { isBooked: true } }
+    );
+
+    if (result.modifiedCount !== seats.length) {
+      return res.status(400).json({ message: "Some seats already booked" });
+    }
+
+    await Booking.create({
+      userId,
       placeId,
-      seatNumber: { $in: seats },
-      isBooked: false
-    },
-    { $set: { isBooked: true } }
-  );
+      from,
+      to,
+      travelDate: date,
+      seats
+    });
 
-  if (result.modifiedCount !== seats.length) {
-    return res.status(400).json({ message: "Some seats already booked" });
+    res.json({ message: "Booking successful" });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Booking failed" });
   }
-
-  await Booking.create({
-    userId,
-    placeId,
-    seats
-  });
-
-  res.json({ message: "Booking successful" });
 };
 
-
-
-module.exports = { getSeats, bookSeats }
+module.exports = { getSeats, bookSeats };

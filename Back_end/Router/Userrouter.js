@@ -55,5 +55,34 @@ router.get("/destinations", getTopDestinations)
 const {getMyBookings}=require("../Controller/profileController")
 router.get("/my-bookings", VerifyToken, getMyBookings);
 
+const Seat = require("../Model/Slot");
+const Booking=require("../Model/Booking")
+
+// CANCEL BOOKING
+router.delete("/cancel-booking/:id", VerifyToken, async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // unbook seats
+    await Seat.updateMany(
+      {
+        placeId: booking.placeId,
+        seatNumber: { $in: booking.seats }
+      },
+      { $set: { isBooked: false } }
+    );
+
+    await Booking.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Booking cancelled" });
+  } catch (err) {
+    res.status(500).json({ message: "Cancel failed" });
+  }
+});
+
 
 module.exports=router
