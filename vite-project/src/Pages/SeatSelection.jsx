@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,Link} from "react";
 import { useParams, useLocation } from "react-router-dom";
 import API from "../Utills/API";
 import "../CSS/slot.css";
@@ -7,7 +7,7 @@ const rows = [1, 2, 3, 4, 5, 6];
 const left = ["A", "B", "C"];
 const right = ["D", "E", "F"];
 
-function SeatSelection() {
+export default function SeatSelection() {
   const { placeId } = useParams();
   const location = useLocation();
   const { from, to, date, travellers } = location.state || {};
@@ -88,7 +88,7 @@ function SeatSelection() {
               );
             })}
 
-            <div className="aisle">✈️</div>
+            <div className="aisle"></div>
 
             {right.map(col => {
               const seat = col + row;
@@ -121,7 +121,9 @@ function SeatSelection() {
         >
           Continue
         </button>
+        
       </div>
+      
 
       {/* MODAL */}
       {openDialog && (
@@ -154,4 +156,3 @@ function SeatSelection() {
   );
 }
 
-export default SeatSelection;

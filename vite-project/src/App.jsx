@@ -10,6 +10,7 @@ import Login from "./Pages/Login"
 import Register from "./Pages/Register"
 import About from "./Pages/About"
 import Tour from "./Pages/Tour"
+import Profile from "./Pages/Profile"
 import './App.css'
 import SeatSelection from "./Pages/SeatSelection"
 
@@ -34,8 +35,10 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/tour" element={<Tour />} />
+        <Route path="/profile" element={<Profile/>} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
         <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />
+
       </Routes>
     </BrowserRouter>
     </div>

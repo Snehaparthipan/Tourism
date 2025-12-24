@@ -1,10 +1,15 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import Home from "../Pages/Home";
 import '../CSS/nav.css'
 
-const Navbar = () => {
+function Navbar(){
   const [open, setOpen] = useState(false);
+  const navigate=useNavigate()
+  const handlelogout=()=>{
+    localStorage.clear();
+    navigate("/")
+  }
 
   return (
     <>
@@ -15,11 +20,13 @@ const Navbar = () => {
         <nav className={`navcenter ${open ? "open" : ""}`}>
           <Link to="/home">Home</Link>
           <Link to="/about">About</Link>
-          <Link to="/tour">Tour</Link>
+          <Link to="/tour">Destinations</Link>
+          <Link to="/tour">Gallary</Link>
         </nav>
 
         <div className="navright">
-          <button className="logbtn">Login</button>
+          <button className="logbtn" onClick={handlelogout}>Logout</button>
+          <button className="logbtn"><Link to="/profile">profile</Link></button>
           <div className="hamburger" onClick={() => setOpen(!open)}>
             <span></span>
             <span></span>

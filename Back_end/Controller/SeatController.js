@@ -1,4 +1,5 @@
 const Seat = require("../Model/Slot");
+const Booking = require("../Model/Booking");
 
 // GET seats for a place
 const getSeats = async (req, res) => {
@@ -13,13 +14,12 @@ const getSeats = async (req, res) => {
 
 const bookSeats = async (req, res) => {
   const { placeId, seats } = req.body;
+  const userId = req.user.id;
 
-  // VALIDATION
   if (!placeId || !Array.isArray(seats) || seats.length === 0) {
     return res.status(400).json({ message: "Invalid data" });
   }
 
-  // BOOK SEATS
   const result = await Seat.updateMany(
     {
       placeId,
@@ -29,12 +29,19 @@ const bookSeats = async (req, res) => {
     { $set: { isBooked: true } }
   );
 
-  if (result.modifiedCount === 0) {
-    return res.status(400).json({ message: "Seats already booked" });
+  if (result.modifiedCount !== seats.length) {
+    return res.status(400).json({ message: "Some seats already booked" });
   }
+
+  await Booking.create({
+    userId,
+    placeId,
+    seats
+  });
 
   res.json({ message: "Booking successful" });
 };
 
 
-module.exports = { getSeats, bookSeats };
+
+module.exports = { getSeats, bookSeats }

@@ -19,8 +19,9 @@ export default function Login() {
             localStorage.setItem(
   "user",
   JSON.stringify({
-    username: data.username,
-    token: data.token
+    id: data.id,
+        username: data.username,
+        email: data.email
   })
 );
             navigate("/home");

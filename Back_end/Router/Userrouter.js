@@ -34,8 +34,10 @@ router.get('/test' , VerifyToken , (req , res)=>{
 })
 
 //for flight seats
+
 router.get("/seats/:placeId", getSeats);
-router.post("/seats/book", bookSeats);
+router.post("/seats/book", VerifyToken, bookSeats);
+
 
 //for hotal room 
 
@@ -46,6 +48,12 @@ router.post("/rooms/book", bookRoom);
 const { getTopDestinations } = require("../Controller/Destinationcontroller")
 
 router.get("/destinations", getTopDestinations)
+
+
+//for profile 
+
+const {getMyBookings}=require("../Controller/profileController")
+router.get("/my-bookings", VerifyToken, getMyBookings);
 
 
 module.exports=router
