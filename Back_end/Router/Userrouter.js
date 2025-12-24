@@ -42,4 +42,10 @@ router.post("/seats/book", bookSeats);
 router.get("/rooms/:hotelId", getRooms);
 router.post("/rooms/book", bookRoom);
 
+
+const { getTopDestinations } = require("../Controller/Destinationcontroller")
+
+router.get("/destinations", getTopDestinations)
+
+
 module.exports=router

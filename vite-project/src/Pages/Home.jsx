@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import '../CSS/home.css'
 import API from "../Utills/API";
-import Navbar from "../Components/Navbar";
+import Navbar from "../Components/Navbar"
+import TopDestinations from "../Components/TopDestinations";
+import PopularPackage from "../Components/PopularPackage";
 
 
 export default function Home() {
@@ -35,6 +37,8 @@ export default function Home() {
 
       <Search />
       <Outlet/>
+      <TopDestinations/>
+      <PopularPackage/>
     </div>
     </>
   );

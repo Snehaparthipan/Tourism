@@ -1,4 +1,4 @@
-
+// Controller/roomController.js
 const Room = require("../Model/Room");
 
 /* GET ROOMS BY HOTEL */
