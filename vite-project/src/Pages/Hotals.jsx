@@ -8,6 +8,9 @@ export default function Hotels() {
   const [hotels, setHotels] = useState([]);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
+  const today = new Date().toISOString().split("T")[0];
+  const datecheckout = new Date().toISOString().split("T")[0];
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,12 +60,12 @@ export default function Hotels() {
 
         <div className="box">
           <label>Check-in</label>
-          <input type="date" value={checkIn} onChange={e => setCheckIn(e.target.value)} />
+          <input type="date" value={checkIn} min={today} onChange={e => setCheckIn(e.target.value)} />
         </div>
 
         <div className="box">
           <label>Check-out</label>
-          <input type="date" value={checkOut} onChange={e => setCheckOut(e.target.value)} />
+          <input type="date" value={checkOut} min={datecheckout} onChange={e => setCheckOut(e.target.value)} />
         </div>
 
       </div>

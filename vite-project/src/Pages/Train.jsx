@@ -17,6 +17,7 @@ export default function Train() {
   const [fromSelected, setFromSelected] = useState(false);
   const [toSelected, setToSelected] = useState(false);
 
+  const today = new Date().toISOString().split("T")[0];
   const [openTravellers, setOpenTravellers] = useState(false);
   const [travellers, setTravellers] = useState({
     adults: 1,
@@ -114,7 +115,7 @@ return (
       )}</div>
 <div className="box">
 <label>Date</label>
-  <input type="date" value={date} onChange={(e) => setDate(e.target.value)}  />
+  <input type="date" value={date} min={today} onChange={(e) => setDate(e.target.value)}  />
 </div>
 {/* TRAVELLERS */}
 <div className="box" onClick={() => setOpenTravellers(!openTravellers)} >

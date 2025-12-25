@@ -15,7 +15,8 @@ export default function Flight() {
 
   const [fromSelected, setFromSelected] = useState(false);
   const [toSelected, setToSelected] = useState(false);
-
+  //for diabled past date
+  const today = new Date().toISOString().split("T")[0];
   const [openTravellers, setOpenTravellers] = useState(false);
   const [travellers, setTravellers] = useState({
     adults: 1,
@@ -157,6 +158,7 @@ export default function Flight() {
             <input
               type="date"
               value={date}
+               min={today}
               onChange={(e) => setDate(e.target.value)}
             />
           </div>

@@ -1,6 +1,9 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/destination.css";
 
-const destinations = [
+
+export const destinations = [
   {
     id: 1,
     name: "Paris, France",
@@ -59,6 +62,8 @@ const destinations = [
 ];
 
 export default function TopDestinations() {
+  const navigate = useNavigate();
+
   return (
     <section className="destinations">
       <div className="dest-header">
@@ -82,7 +87,11 @@ export default function TopDestinations() {
                 <span className="price">{item.price}</span>
               </div>
 
-              <button className="explore-btn">
+              {/* Navigate to booking page */}
+              <button
+                className="explore-btn"
+                onClick={() => navigate(`/explore/${item.id}`)}
+              >
                 Explore →
               </button>
             </div>

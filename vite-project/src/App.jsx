@@ -13,6 +13,7 @@ import Tour from "./Pages/Tour"
 import Profile from "./Pages/Profile"
 import './App.css'
 import SeatSelection from "./Pages/SeatSelection"
+import BookTour from "./Pages/BookTour"
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
         <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />
+        <Route path="/explore/:id" element={<BookTour />} />
 
       </Routes>
     </BrowserRouter>

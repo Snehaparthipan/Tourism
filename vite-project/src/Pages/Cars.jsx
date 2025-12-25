@@ -17,7 +17,7 @@ export default function Cars() {
 
   const [fromSelected, setFromSelected] = useState(false);
   const [toSelected, setToSelected] = useState(false);
-
+  const today = new Date().toISOString().split("T")[0];
   const [openTravellers, setOpenTravellers] = useState(false);
   const [travellers, setTravellers] = useState({
     adults: 1,
@@ -153,7 +153,7 @@ export default function Cars() {
   <label>Date</label>
   <input
     type="date"
-    value={date}
+    value={date} min={today}
     onChange={(e) => setDate(e.target.value)}
   />
 </div>
