@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../css/testimonials.css";
+import "../CSS/testimonials.css"
 
 const messages = [
   "Our trip was absolutely magical! Everything was perfectly organized.",
