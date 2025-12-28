@@ -91,18 +91,27 @@ router.post('/explore',VerifyToken,BookTour)
 router.get("/myexplore", VerifyToken, getMyTourBookings);
 const { Explore } = require("../Model/Explore");
 
-
-router.delete("/cancel-tour/:id", VerifyToken, async (req,res) => {
+router.delete("/cancel-tour/:id", VerifyToken, async (req, res) => {
   try {
-    const deleteuser=await user.findByIdAndDelete(req.params.id,
-                req.body,
-                {new:true}
-            )
-            res.status(200).json({message:"user get from DB",data:deleteuser})
+    const bookingId = req.params.id;
+    const userId = req.user.id; // from token
+
+    // Only delete booking that belongs to the logged-in user
+    const booking = await Explore.findOneAndDelete({
+      _id: bookingId,
+      userId: userId
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Tour booking not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Tour booking cancelled successfully", data: booking });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Cancel failed" });
   }
-})
+});
 
 
 module.exports=router
