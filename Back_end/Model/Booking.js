@@ -4,7 +4,7 @@ const bookingSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Login",   // ⚠️ FIX: your user model is Login, not User
+      ref: "Login",  
       required: true
     },
     placeId: {

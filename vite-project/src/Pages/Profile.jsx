@@ -5,28 +5,41 @@ import "../CSS/profile.css";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+const [bookings, setBookings] = useState([]);        // flights
+const [tourBookings, setTourBookings] = useState([]); // tours
+const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+ useEffect(() => {
+  const token = localStorage.getItem("token");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (!token || !storedUser) {
-      navigate("/");
-      return;
-    }
+  if (!token || !storedUser) {
+    navigate("/");
+    return;
+  }
 
-    setUser(storedUser);
+  setUser(storedUser);
 
-    API.get("/my-bookings", {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => setBookings(res.data))
-      .catch(err => console.log(err))
-      .finally(() => setLoading(false));
-  }, [navigate]);
+  // ✈️ Flight bookings
+  API.get("/my-bookings", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(res => setBookings(res.data))
+    .catch(err => console.log(err))
+    .finally(() => setLoading(false));
+
+  // 🏨 Tour bookings
+  API.get("/my-tour-bookings", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(res => setTourBookings(res.data))
+    .catch(err => console.log(err));
+
+}, [navigate]);
+
+
 
   const cancelBooking = async (id) => {
     const confirm = window.confirm("Are you sure you want to cancel this booking?");
@@ -43,7 +56,7 @@ export default function Profile() {
       alert(err.response?.data?.message || "Failed to cancel booking");
     }
   };
-
+  
   // if (loading) return <p className="loading">Loading profile...</p>;
   if (!user) return null;
 
@@ -99,6 +112,30 @@ export default function Profile() {
           </div>
         )}
       </div>
+        <h2>🏨 Tour Package Bookings</h2>
+
+{!loading && tourBookings?.length === 0 && (
+  <p>No tour bookings yet</p>
+)}
+
+{tourBookings?.length > 0 && (
+  <div className="booking-grid">
+    {tourBookings.map(b => (
+      <div className="booking-card" key={b._id}>
+        <p><strong>Destination:</strong> {b.destination}</p>
+        <p>
+          <strong>Check-in:</strong>{" "}
+          {new Date(b.checkIn).toDateString()}
+        </p>
+        <p>
+          <strong>Check-out:</strong>{" "}
+          {new Date(b.checkOut).toDateString()}
+        </p>
+        <p><strong>Price:</strong> ₹{b.price}</p>
+      </div>
+    ))}
+  </div>
+)}
 
     </div>
   );
