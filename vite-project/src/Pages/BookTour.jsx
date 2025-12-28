@@ -42,9 +42,9 @@ export default function BookTour() {
       await API.post(
         "/explore",
         {
-          destination: tour.name,          // ✅ correct
-          checkIn: new Date(checkIn),       // ✅ correct
-          checkOut: new Date(checkOut),     // ✅ correct
+          destination: tour.name,        
+          checkIn: new Date(checkIn),       
+          checkOut: new Date(checkOut),    
           price: Number(tour.price.replace("$", ""))
         },
         {
@@ -55,7 +55,7 @@ export default function BookTour() {
       );
 
       alert("Booking Successful 🎉");
-      navigate("/profile");
+      // navigate("/profile");
     } catch (err) {
       console.error(err.response?.data || err);
       alert(err.response?.data?.message || "Booking Failed");

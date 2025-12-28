@@ -9,7 +9,7 @@ export const destinations = [
     name: "Paris, France",
     desc: "The city of lights and romance",
     days: "7 Days",
-    price: "$1,299",
+    price: "$199",
     image:
       "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200",
   },
@@ -27,7 +27,7 @@ export const destinations = [
     name: "Maldives",
     desc: "Luxury overwater bungalows",
     days: "6 Days",
-    price: "$2,499",
+    price: "$499",
     image:
       "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=1200",
   },
@@ -36,7 +36,7 @@ export const destinations = [
     name: "Tokyo, Japan",
     desc: "Modern meets traditional culture",
     days: "8 Days",
-    price: "$1,599",
+    price: "$599",
     image:
       "https://images.unsplash.com/photo-1549693578-d683be217e58?q=80&w=1200",
   },
@@ -54,7 +54,7 @@ export const destinations = [
   name: "Dubai, UAE",
   desc: "Luxury shopping and iconic skyscrapers",
   days: "5 Days",
-  price: "$1,199",
+  price: "$999",
   image:
     "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200",
 },

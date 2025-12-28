@@ -40,22 +40,33 @@ export default function Profile() {
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, [navigate]);
+const cancelFlightBooking = async (id) => {
+  if (!window.confirm("Are you sure you want to cancel this flight booking?")) return;
+  try {
+    const token = localStorage.getItem("token");
+    await API.delete(`/cancel-booking/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setBookings(prev => prev.filter(b => b._id !== id));
+    alert("Flight booking cancelled successfully");
+  } catch (err) {
+    alert(err.response?.data?.message || "Failed to cancel flight booking");
+  }
+};
 
-  const cancelBooking = async (id) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      await API.delete(`/cancel-booking/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setBookings(prev => prev.filter(b => b._id !== id));
-      alert("Booking cancelled successfully");
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to cancel booking");
-    }
-  };
+const cancelTourBooking = async (id) => {
+  if (!window.confirm("Are you sure you want to cancel this tour booking?")) return;
+  try {
+    const token = localStorage.getItem("token");
+    await API.delete(`/cancel-tour/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setTourBookings(prev => prev.filter(b => b._id !== id));
+    alert("Tour booking cancelled successfully");
+  } catch (err) {
+    alert(err.response?.data?.message || "Failed to cancel tour booking");
+  }
+};
 
   if (!user) return null;
 
@@ -94,12 +105,9 @@ export default function Profile() {
                   <strong>Seats:</strong> {b.seats?.join(", ")}
                 </p>
 
-                <button
-                  className="cancel-btn"
-                  onClick={() => cancelBooking(b._id)}
-                >
-                  Cancel Booking
-                </button>
+                <button className="cancel-btn" onClick={() => cancelFlightBooking(b._id)}>
+  Cancel Booking
+</button>
               </div>
             ))}
           </div>
@@ -128,6 +136,10 @@ export default function Profile() {
                   {new Date(b.checkOut).toDateString()}
                 </p>
                 <p><strong>Price:</strong> ₹{b.price}</p>
+                <button className="cancel-btn" onClick={() => cancelTourBooking(b._id)}>
+  Cancel Booking
+</button>
+
               </div>
             ))}
           </div>

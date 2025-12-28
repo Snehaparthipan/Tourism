@@ -57,7 +57,6 @@ router.get("/my-bookings", VerifyToken, getMyBookings);
 
 const Seat = require("../Model/Slot");
 const Booking=require("../Model/Booking")
-
 // CANCEL BOOKING
 router.delete("/cancel-booking/:id", VerifyToken, async (req, res) => {
   try {
@@ -90,6 +89,20 @@ router.delete("/cancel-booking/:id", VerifyToken, async (req, res) => {
 const { BookTour,getMyTourBookings }=require("../Controller/Explorecontroller")
 router.post('/explore',VerifyToken,BookTour)
 router.get("/myexplore", VerifyToken, getMyTourBookings);
+const { Explore } = require("../Model/Explore");
+
+
+router.delete("/cancel-tour/:id", VerifyToken, async (req,res) => {
+  try {
+    const deleteuser=await user.findByIdAndDelete(req.params.id,
+                req.body,
+                {new:true}
+            )
+            res.status(200).json({message:"user get from DB",data:deleteuser})
+  } catch (err) {
+    res.status(500).json({ message: "Cancel failed" });
+  }
+})
 
 
 module.exports=router
