@@ -53,7 +53,6 @@ const cancelFlightBooking = async (id) => {
     alert(err.response?.data?.message || "Failed to cancel flight booking");
   }
 };
-
 const cancelTourBooking = async (id) => {
   if (!window.confirm("Are you sure you want to cancel this tour booking?")) return;
   try {
@@ -67,7 +66,6 @@ const cancelTourBooking = async (id) => {
     alert(err.response?.data?.message || "Failed to cancel tour booking");
   }
 };
-
   if (!user) return null;
 
   return (
