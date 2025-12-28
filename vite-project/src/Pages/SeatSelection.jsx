@@ -29,14 +29,19 @@ export default function SeatSelection() {
   }, [token, navigate]);
 
   // fetch seats
-  useEffect(() => {
-    API.get(`/seats/${placeId}`).then(res => {
+ useEffect(() => {
+  API.get(`/seats/${placeId}`)
+    .then(res => {
       const booked = res.data
         .filter(s => s.isBooked)
         .map(s => s.seatNumber);
       setBookedSeats(booked);
+    })
+    .catch(err => {
+      console.error("Failed to fetch seats:", err);
     });
-  }, [placeId]);
+}, [placeId]);
+
 
   const toggleSeat = (seat) => {
     if (bookedSeats.includes(seat)) return;

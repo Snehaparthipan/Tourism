@@ -87,8 +87,9 @@ router.delete("/cancel-booking/:id", VerifyToken, async (req, res) => {
 
 //for Tour
 
-const { BookTour }=require("../Controller/Explorecontroller")
+const { BookTour,getMyTourBookings }=require("../Controller/Explorecontroller")
 router.post('/explore',BookTour)
+router.get("/myexplore", VerifyToken, getMyTourBookings);
 
 
 module.exports=router
