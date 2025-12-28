@@ -89,13 +89,17 @@ router.delete("/cancel-booking/:id", VerifyToken, async (req, res) => {
 const { BookTour,getMyTourBookings }=require("../Controller/Explorecontroller")
 router.post('/explore',VerifyToken,BookTour)
 router.get("/myexplore", VerifyToken, getMyTourBookings);
-const Explore  = require("../Model/Explore");
+const Explore = require("../Model/Explore");
+
 router.delete("/cancel-tour/:id", VerifyToken, async (req, res) => {
   try {
     const bookingId = req.params.id;
-    const userId = req.user.id; // from token
+    const userId = req.user.id;
 
-    // Only allow deletion of bookings owned by the logged-in user
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const booking = await Explore.findOneAndDelete({
       _id: bookingId,
       userId: userId
