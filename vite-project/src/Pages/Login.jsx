@@ -21,7 +21,7 @@ export default function Login() {
     // store token
     localStorage.setItem("token", data.token);
 
-    // store user (FROM data.user)
+    // store user 
     localStorage.setItem(
       "user",
       JSON.stringify({
