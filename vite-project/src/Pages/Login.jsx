@@ -20,7 +20,6 @@ export default function Login() {
 
     // store token
     localStorage.setItem("token", data.token);
-
     // store user 
     localStorage.setItem(
       "user",
