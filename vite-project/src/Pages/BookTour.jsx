@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../CSS/booktour.css";
 import API from "../Utills/API";
 import { destinations } from "../Components/TopDestinations";
 
 export default function BookTour() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const tour = destinations.find((d) => d.id === Number(id));
 
   const [checkIn, setCheckIn] = useState("");
@@ -19,21 +21,44 @@ export default function BookTour() {
   }
 
   const handleBooking = async () => {
-    if (!checkIn || !checkOut) return alert("Please select dates");
-    if (checkOut <= checkIn)
-      return alert("Check-out must be after check-in");
+    if (!checkIn || !checkOut) {
+      alert("Please select dates");
+      return;
+    }
+
+    if (checkOut <= checkIn) {
+      alert("Check-out must be after check-in");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      navigate("/");
+      return;
+    }
 
     try {
-      await API.post("/explore", {
-        destination: tour.name,
-        checkIn,
-        checkOut,
-        price: tour.price,
-      });
-      alert("Booking Successful");
+      await API.post(
+        "/explore",
+        {
+          destination: tour.name,          // ✅ correct
+          checkIn: new Date(checkIn),       // ✅ correct
+          checkOut: new Date(checkOut),     // ✅ correct
+          price: Number(tour.price.replace("$", ""))
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Booking Successful 🎉");
+      navigate("/profile");
     } catch (err) {
-      console.error(err);
-      alert("Booking Failed");
+      console.error(err.response?.data || err);
+      alert(err.response?.data?.message || "Booking Failed");
     }
   };
 
@@ -47,7 +72,7 @@ export default function BookTour() {
         <div className="bt-details">
           <h1 className="bt-title">{tour.name}</h1>
           <p className="bt-price">
-            Package Price: <span>{tour.price}</span>
+            Package Price: <span>₹{tour.price}</span>
           </p>
 
           <div className="bt-form">

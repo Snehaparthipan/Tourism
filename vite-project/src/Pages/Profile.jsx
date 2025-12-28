@@ -28,7 +28,10 @@ export default function Profile() {
 
     Promise.all([
       API.get("/my-bookings", { headers }),
-      API.get("/myexplore", { headers }),
+      API.get("/myexplore", {
+  headers: { Authorization: `Bearer ${token}` },
+})
+
     ])
       .then(([flightRes, tourRes]) => {
         setBookings(flightRes.data || []);
