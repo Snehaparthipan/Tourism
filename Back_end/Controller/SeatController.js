@@ -1,15 +1,22 @@
 const Seat = require("../Model/Slot");
 const Booking = require("../Model/Booking");
 
-// GET seats for a place
 const getSeats = async (req, res) => {
-   try {
-    const bookings = await Booking.find({ userId: req.user.id }).sort({ createdAt: -1 });
-    res.json(bookings);
+  try {
+    const { placeId } = req.params;
+
+    if (!placeId) {
+      return res.status(400).json({ message: "Place ID is required" });
+    }
+
+    const seats = await Seat.find({ placeId });
+    res.json(seats);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch bookings" });
+    console.log(err);
+    res.status(500).json({ message: "Failed to fetch seats" });
   }
-}
+};
+
 
 
 const bookSeats = async (req, res) => {
