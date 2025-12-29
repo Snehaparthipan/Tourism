@@ -14,6 +14,7 @@ import Profile from "./Pages/Profile"
 import './App.css'
 import SeatSelection from "./Pages/SeatSelection"
 import BookTour from "./Pages/BookTour"
+import Destination from "./Pages/Destination"
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
         </Route>
 
         <Route path="/about" element={<About />} />
-        <Route path="/tour" element={<Tour />} />
+        <Route path="/destination" element={<Destination/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
         <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />

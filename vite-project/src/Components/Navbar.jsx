@@ -38,7 +38,7 @@ function Navbar() {
       <div className={`navcenter ${open ? "open" : ""}`}>
         <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
-        <Link to="/tour">Destinations</Link>
+        <Link to="/destination">Destinations</Link>
         <Link to="/tour">Gallery</Link>
       </div>
 

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../CSS/booktour.css";
 import API from "../Utills/API";
-import { destinations } from "../Components/TopDestinations";
+// import { destinations } from "../Components/TopDestinations";
+import { destinations } from "../Pages/Destination"
 
 export default function BookTour() {
   const { id } = useParams();
