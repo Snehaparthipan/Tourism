@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/destination.css";
+import Navbar from "../Components/Navbar";
 
 
 export const destinations = [
@@ -131,13 +132,14 @@ export default function Destination() {
   const navigate = useNavigate();
 
   return (
-    <section className="destinations">
+    <>
+    <Navbar/>
+    <section className="destinations" style={{marginTop:"60px"}}>
       <div className="dest-header">
         <div>
-          <h2>Top Destinations</h2>
+          <h2>Destinations</h2>
           <p>Handpicked destinations that promise unforgettable experiences</p>
         </div>
-        <button className="view-btn">View All Destinations</button>
       </div>
 
       <div className="dest-grid">
@@ -165,5 +167,6 @@ export default function Destination() {
         ))}
       </div>
     </section>
+    </>
   );
 }

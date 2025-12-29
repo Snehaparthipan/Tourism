@@ -5,6 +5,8 @@ const{ Register, Loginuser }=require('../Controller/Logincontroller')
 const{ getSeats,bookSeats }=require("../Controller/SeatController")
 const { getRooms, bookRoom } = require("../Controller/Roomcontroller");
 const{VerifyToken}=require("../Middlewere/token")
+const{ bookPackage,getMyPackages,cancelPackage}=require("../Controller/PackageController")
+
 
 const router=express.Router()
 router.post("/users",postUser)
@@ -115,6 +117,11 @@ router.delete("/cancel-tour/:id", VerifyToken, async (req, res) => {
     res.status(500).json({ message: "Cancel failed" });
   }
 });
+
+//for package booking
+router.post("/popular/book", VerifyToken, bookPackage);
+router.get("/popular/my-bookings", VerifyToken, getMyPackages);
+router.delete("/popular/cancel/:id", VerifyToken, cancelPackage);
 
 
 module.exports=router

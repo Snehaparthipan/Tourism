@@ -15,6 +15,8 @@ import './App.css'
 import SeatSelection from "./Pages/SeatSelection"
 import BookTour from "./Pages/BookTour"
 import Destination from "./Pages/Destination"
+import TopDestinations from "./Components/TopDestinations"
+import BookPopularPackage from "./Pages/BookPopularPackage"
 
 function App() {
   return (
@@ -41,7 +43,8 @@ function App() {
         <Route path="/bookhotel" element={<Bookhotel/>}/>
         <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />
         <Route path="/explore/:id" element={<BookTour />} />
-
+        <Route path="/topdestination" element={<TopDestinations/>} />
+        <Route path="/popular/book/:id" element={<BookPopularPackage/>} />
       </Routes>
     </BrowserRouter>
     </div>

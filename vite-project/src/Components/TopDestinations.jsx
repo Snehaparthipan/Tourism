@@ -71,7 +71,7 @@ export default function TopDestinations() {
           <h2>Top Destinations</h2>
           <p>Handpicked destinations that promise unforgettable experiences</p>
         </div>
-        <button className="view-btn">View All Destinations</button>
+        <button className="view-btn" onClick={()=>navigate("/destination")}>View All Destinations</button>
       </div>
 
       <div className="dest-grid">

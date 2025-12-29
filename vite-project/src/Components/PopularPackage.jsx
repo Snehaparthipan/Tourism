@@ -1,6 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import "../CSS/popular.css";
 
-const packages = [
+export const packages = [
   {
     id: 1,
     title: "European Grand Tour",
@@ -48,7 +49,12 @@ const packages = [
   },
 ];
 
+
+
+
+
 export default function PopularPackage() {
+  const navigate = useNavigate()
   return (
     <section className="packages">
       <h2>Popular Packages</h2>
@@ -84,7 +90,12 @@ export default function PopularPackage() {
                 ))}
               </ul>
 
-              <button className="book-btn">Book This Package</button>
+              <button
+                className="book-btn"
+                onClick={() => navigate(`/popular/book/${pkg.id}`)}
+              >
+                Book This Package
+              </button>
             </div>
           </div>
         ))}

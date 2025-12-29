@@ -72,6 +72,7 @@ export default function BookTour() {
 
         <div className="bt-details">
           <h1 className="bt-title">{tour.name}</h1>
+        
           <p className="bt-price">
             Package Price: <span>₹{tour.price}</span>
           </p>
