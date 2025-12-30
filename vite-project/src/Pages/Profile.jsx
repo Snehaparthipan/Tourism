@@ -7,6 +7,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [tourBookings, setTourBookings] = useState([]);
+  const [popBooking,setPopBooking]=useState([])
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -30,12 +31,13 @@ export default function Profile() {
       API.get("/my-bookings", { headers }),
       API.get("/myexplore", {
   headers: { Authorization: `Bearer ${token}` },
-})
+}),API.get("/popular/my-bookings",{headers})
 
     ])
-      .then(([flightRes, tourRes]) => {
+      .then(([flightRes, tourRes,popRes]) => {
         setBookings(flightRes.data || []);
         setTourBookings(tourRes.data || []);
+        setPopBooking(popRes.data || []);
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
@@ -66,6 +68,20 @@ const cancelTourBooking = async (id) => {
     alert(err.response?.data?.message || "Failed to cancel tour booking");
   }
 };
+const cancelPopBooking = async (id) => {
+  if (!window.confirm("Are you sure you want to cancel this tour booking?")) return;
+  try {
+    const token = localStorage.getItem("token");
+    await API.delete(`/popular/cancel/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setPopBooking(prev => prev.filter(b => b._id !== id));
+    alert("Tour booking cancelled successfully");
+  } catch (err) {
+    alert(err.response?.data?.message || "Failed to cancel tour booking");
+  }
+};
+
   if (!user) return null;
 
   return (
@@ -135,6 +151,31 @@ const cancelTourBooking = async (id) => {
                 </p>
                 <p><strong>Price:</strong> ₹{b.price}</p>
                 <button className="cancel-btn" onClick={() => cancelTourBooking(b._id)}>
+  Cancel Booking
+</button>
+
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+
+        {/* Popular Bookings */}
+      <div className="booking-section">
+        <h2>🏨 Popular Package Bookings</h2>
+
+        {!loading && popBooking.length === 0 && (
+          <p className="no-bookings">No tour bookings yet</p>
+        )}
+
+        {popBooking.length > 0 && (
+          <div className="booking-grid">
+            {popBooking.map(b => (
+              <div className="booking-card" key={b._id}>
+                <p><strong>Destination:</strong> {b.packageTitle}</p>
+                <p><strong>Price:</strong> ₹{b.price}</p>
+                <button className="cancel-btn" onClick={() => cancelPopBooking(b._id)}>
   Cancel Booking
 </button>
 

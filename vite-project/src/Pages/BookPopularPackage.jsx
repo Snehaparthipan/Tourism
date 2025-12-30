@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../CSS/booktour.css";
 import API from "../Utills/API";
-import { packages } from "../Components/PopularPackage";
+import { packages } from "../Components/PopularPackage"; // your package array
 
 export default function BookPopularPackage() {
   const { id } = useParams();
@@ -10,32 +10,39 @@ export default function BookPopularPackage() {
 
   const pkg = packages.find((p) => p.id === Number(id));
   if (!pkg) return <h2 style={{ textAlign: "center" }}>Package not found</h2>;
+const handleBooking = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Please login first");
+    navigate("/login");
+    return;
+  }
 
-  const handleBooking = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please login first");
-      navigate("/login");
-      return;
-    }
-
-    try {
-      // Remove headers here, interceptor handles Authorization
-      await API.post("/popular/book", {
+  try {
+    const res = await API.post(
+      "/popular/book",
+      {
         packageId: pkg.id,
         packageTitle: pkg.title,
         price: pkg.price,
         days: pkg.days,
         countries: pkg.countries,
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // <- REQUIRED
+        },
+      }
+    );
 
-      alert("Popular package booked successfully 🎉");
-      navigate("/profile");
-    } catch (err) {
-      console.error(err.response?.data || err);
-      alert(err.response?.data?.message || "Booking failed");
-    }
-  };
+    alert(res.data.message || "Booking successful 🎉");
+    navigate("/profile");
+  } catch (err) {
+    console.error("Booking error:", err.response?.data || err);
+    alert(err.response?.data?.message || "Booking failed");
+  }
+};
+
 
   return (
     <section className="bt-wrapper">

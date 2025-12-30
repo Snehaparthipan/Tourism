@@ -121,7 +121,32 @@ router.delete("/cancel-tour/:id", VerifyToken, async (req, res) => {
 //for package booking
 router.post("/popular/book", VerifyToken, bookPackage);
 router.get("/popular/my-bookings", VerifyToken, getMyPackages);
-router.delete("/popular/cancel/:id", VerifyToken, cancelPackage);
+
+const popular=require("../Model/Package")
+router.delete("/popular/cancel/:id", VerifyToken, async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const userId = req.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const booking = await popular.findOneAndDelete({
+      _id: bookingId,
+      userId: userId
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Tour booking not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Tour booking cancelled successfully", data: booking });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Cancel failed" });
+  }
+});
 
 
 module.exports=router
