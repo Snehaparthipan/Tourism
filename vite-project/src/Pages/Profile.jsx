@@ -85,7 +85,7 @@ export default function Profile() {
 
       {/* FLIGHT BOOKINGS */}
       <Section
-        title="✈️ Flight Bookings"
+        title="Flight Bookings"
         emptyText="No flight bookings yet"
         loading={loading}
         data={bookings}
@@ -103,7 +103,7 @@ export default function Profile() {
 
       {/* TOUR BOOKINGS */}
       <Section
-        title="🏨 Tour Packages"
+        title="Tour Packages"
         emptyText="No tour bookings yet"
         loading={loading}
         data={tourBookings}
@@ -121,7 +121,7 @@ export default function Profile() {
 
       {/* POPULAR BOOKINGS */}
       <Section
-        title="🔥 Popular Packages"
+        title="Popular Packages"
         emptyText="No popular bookings yet"
         loading={loading}
         data={popBooking}
