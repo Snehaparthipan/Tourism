@@ -7,6 +7,7 @@ import {
   FaShieldAlt,
 } from "react-icons/fa";
 import Testimonials from '../Components/Testimonials';
+import Footer from '../Components/Footer';
 export default function About() {
   return (
     <div>
@@ -111,6 +112,7 @@ export default function About() {
       </div>
     </section>
     <Testimonials/>
+    <Footer/>
     </div>
   )
 }

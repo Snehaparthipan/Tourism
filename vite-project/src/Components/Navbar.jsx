@@ -55,7 +55,7 @@ function Navbar() {
 
           {profileOpen && (
             <div className="profile-dropdown">
-              <Link to="/profile">My Profile</Link>
+              <Link className="profilelink" to="/profile">My Profile</Link>
               <button onClick={handleLogout}>Logout</button>
             </div>
           )}

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/destination.css";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 
 export const destinations = [
@@ -167,6 +168,7 @@ export default function Destination() {
         ))}
       </div>
     </section>
+    <Footer/>
     </>
   );
 }

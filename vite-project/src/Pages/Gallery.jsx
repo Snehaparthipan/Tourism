@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../CSS/Gallary.css";
 import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 const images = [
   {
@@ -147,6 +148,7 @@ export default function Gallery() {
           </div>
         )}
       </div>
+      <Footer/>
     </>
   );
 }

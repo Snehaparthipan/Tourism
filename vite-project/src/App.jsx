@@ -18,11 +18,14 @@ import Destination from "./Pages/Destination"
 import TopDestinations from "./Components/TopDestinations"
 import BookPopularPackage from "./Pages/BookPopularPackage"
 import Gallery from "./Pages/Gallery"
+import ScrollToTop from "./Components/ScrollToTop"
 
 function App() {
   return (
     <div className="body">
+      
     <BrowserRouter>
+    <ScrollToTop/>
       {/* <Navbar /> */}
 
       <Routes>

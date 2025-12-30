@@ -6,6 +6,7 @@ import API from "../Utills/API";
 import Navbar from "../Components/Navbar"
 import TopDestinations from "../Components/TopDestinations";
 import PopularPackage from "../Components/PopularPackage";
+import Footer from "../Components/Footer";
 
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
       <Outlet/>
       <TopDestinations/>
       <PopularPackage/>
+      <Footer/>
     </div>
     </>
   );

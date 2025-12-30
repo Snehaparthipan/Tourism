@@ -7,7 +7,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [tourBookings, setTourBookings] = useState([]);
-  const [popBooking,setPopBooking]=useState([])
+  const [popBooking, setPopBooking] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -23,167 +23,133 @@ export default function Profile() {
 
     setUser(storedUser);
 
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    const headers = { Authorization: `Bearer ${token}` };
 
     Promise.all([
       API.get("/my-bookings", { headers }),
-      API.get("/myexplore", {
-  headers: { Authorization: `Bearer ${token}` },
-}),API.get("/popular/my-bookings",{headers})
-
+      API.get("/myexplore", { headers }),
+      API.get("/popular/my-bookings", { headers }),
     ])
-      .then(([flightRes, tourRes,popRes]) => {
+      .then(([flightRes, tourRes, popRes]) => {
         setBookings(flightRes.data || []);
         setTourBookings(tourRes.data || []);
         setPopBooking(popRes.data || []);
       })
-      .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, [navigate]);
-const cancelFlightBooking = async (id) => {
-  if (!window.confirm("Are you sure you want to cancel this flight booking?")) return;
-  try {
+
+  /* CANCEL FUNCTIONS */
+  const cancelFlightBooking = async (id) => {
+    if (!window.confirm("Cancel this flight booking?")) return;
     const token = localStorage.getItem("token");
     await API.delete(`/cancel-booking/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setBookings(prev => prev.filter(b => b._id !== id));
-    alert("Flight booking cancelled successfully");
-  } catch (err) {
-    alert(err.response?.data?.message || "Failed to cancel flight booking");
-  }
-};
-const cancelTourBooking = async (id) => {
-  if (!window.confirm("Are you sure you want to cancel this tour booking?")) return;
-  try {
+    setBookings(b => b.filter(x => x._id !== id));
+  };
+
+  const cancelTourBooking = async (id) => {
+    if (!window.confirm("Cancel this tour booking?")) return;
     const token = localStorage.getItem("token");
     await API.delete(`/cancel-tour/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setTourBookings(prev => prev.filter(b => b._id !== id));
-    alert("Tour booking cancelled successfully");
-  } catch (err) {
-    alert(err.response?.data?.message || "Failed to cancel tour booking");
-  }
-};
-const cancelPopBooking = async (id) => {
-  if (!window.confirm("Are you sure you want to cancel this tour booking?")) return;
-  try {
+    setTourBookings(b => b.filter(x => x._id !== id));
+  };
+
+  const cancelPopBooking = async (id) => {
+    if (!window.confirm("Cancel this package booking?")) return;
     const token = localStorage.getItem("token");
     await API.delete(`/popular/cancel/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setPopBooking(prev => prev.filter(b => b._id !== id));
-    alert("Tour booking cancelled successfully");
-  } catch (err) {
-    alert(err.response?.data?.message || "Failed to cancel tour booking");
-  }
-};
+    setPopBooking(b => b.filter(x => x._id !== id));
+  };
 
   if (!user) return null;
 
   return (
     <div className="profile-page">
-      {/* Profile Header */}
-      <div className="profile-card">
-        <div className="avatar">
-          {user.username?.charAt(0).toUpperCase()}
+      <button className="edit-btn" onClick={()=>navigate("/home")}>Back</button>
+      {/* PROFILE HEADER */}
+      <div className="profile-header">
+        <div className="profile-image">
+          <span>{user.username.charAt(0).toUpperCase()}</span>
         </div>
-        <div className="profile-details">
+
+        <div className="profile-info">
           <h2>{user.username}</h2>
           <p>{user.email}</p>
         </div>
       </div>
 
-      {/* Flight Bookings */}
-      <div className="booking-section">
-        <h2>✈️ My Bookings</h2>
+      {/* FLIGHT BOOKINGS */}
+      <Section
+        title="✈️ Flight Bookings"
+        emptyText="No flight bookings yet"
+        loading={loading}
+        data={bookings}
+      >
+        {bookings.map(b => (
+          <BookingCard key={b._id}>
+            <p><b>From:</b> {b.from}</p>
+            <p><b>To:</b> {b.to}</p>
+            <p><b>Date:</b> {new Date(b.travelDate).toDateString()}</p>
+            <p><b>Seats:</b> {b.seats?.join(", ")}</p>
+            <button onClick={() => cancelFlightBooking(b._id)}>Cancel</button>
+          </BookingCard>
+        ))}
+      </Section>
 
-        {!loading && bookings.length === 0 && (
-          <p className="no-bookings">You have no bookings yet</p>
-        )}
+      {/* TOUR BOOKINGS */}
+      <Section
+        title="🏨 Tour Packages"
+        emptyText="No tour bookings yet"
+        loading={loading}
+        data={tourBookings}
+      >
+        {tourBookings.map(b => (
+          <BookingCard key={b._id}>
+            <p><b>Destination:</b> {b.destination}</p>
+            <p><b>Check-in:</b> {new Date(b.checkIn).toDateString()}</p>
+            <p><b>Check-out:</b> {new Date(b.checkOut).toDateString()}</p>
+            <p><b>Price:</b> ₹{b.price}</p>
+            <button onClick={() => cancelTourBooking(b._id)}>Cancel</button>
+          </BookingCard>
+        ))}
+      </Section>
 
-        {bookings.length > 0 && (
-          <div className="booking-grid">
-            {bookings.map(b => (
-              <div className="booking-card" key={b._id}>
-                <p><strong>From:</strong> {b.from}</p>
-                <p><strong>To:</strong> {b.to}</p>
-                <p>
-                  <strong>Date:</strong>{" "}
-                  {new Date(b.travelDate).toDateString()}
-                </p>
-                <p>
-                  <strong>Seats:</strong> {b.seats?.join(", ")}
-                </p>
+      {/* POPULAR BOOKINGS */}
+      <Section
+        title="🔥 Popular Packages"
+        emptyText="No popular bookings yet"
+        loading={loading}
+        data={popBooking}
+      >
+        {popBooking.map(b => (
+          <BookingCard key={b._id}>
+            <p><b>Package:</b> {b.packageTitle}</p>
+            <p><b>Price:</b> ₹{b.price}</p>
+            <button onClick={() => cancelPopBooking(b._id)}>Cancel</button>
+          </BookingCard>
+        ))}
+      </Section>
 
-                <button className="cancel-btn" onClick={() => cancelFlightBooking(b._id)}>
-  Cancel Booking
-</button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Tour Bookings */}
-      <div className="booking-section">
-        <h2>🏨 Tour Package Bookings</h2>
-
-        {!loading && tourBookings.length === 0 && (
-          <p className="no-bookings">No tour bookings yet</p>
-        )}
-
-        {tourBookings.length > 0 && (
-          <div className="booking-grid">
-            {tourBookings.map(b => (
-              <div className="booking-card" key={b._id}>
-                <p><strong>Destination:</strong> {b.destination}</p>
-                <p>
-                  <strong>Check-in:</strong>{" "}
-                  {new Date(b.checkIn).toDateString()}
-                </p>
-                <p>
-                  <strong>Check-out:</strong>{" "}
-                  {new Date(b.checkOut).toDateString()}
-                </p>
-                <p><strong>Price:</strong> ₹{b.price}</p>
-                <button className="cancel-btn" onClick={() => cancelTourBooking(b._id)}>
-  Cancel Booking
-</button>
-
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-
-        {/* Popular Bookings */}
-      <div className="booking-section">
-        <h2>🏨 Popular Package Bookings</h2>
-
-        {!loading && popBooking.length === 0 && (
-          <p className="no-bookings">No tour bookings yet</p>
-        )}
-
-        {popBooking.length > 0 && (
-          <div className="booking-grid">
-            {popBooking.map(b => (
-              <div className="booking-card" key={b._id}>
-                <p><strong>Destination:</strong> {b.packageTitle}</p>
-                <p><strong>Price:</strong> ₹{b.price}</p>
-                <button className="cancel-btn" onClick={() => cancelPopBooking(b._id)}>
-  Cancel Booking
-</button>
-
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
+
+/* REUSABLE COMPONENTS */
+const Section = ({ title, emptyText, loading, data, children }) => (
+  <div className="booking-section">
+    <h3>{title}</h3>
+    {!loading && data.length === 0 && <p className="no-bookings">{emptyText}</p>}
+    {data.length > 0 && <div className="booking-grid">{children}</div>}
+  </div>
+);
+
+const BookingCard = ({ children }) => (
+  <div className="booking-card">
+    {children}
+  </div>
+);
