@@ -39,7 +39,7 @@ function Navbar() {
         <Link to="/home">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/destination">Destinations</Link>
-        <Link to="/tour">Gallery</Link>
+        <Link to="/gallery">Gallery</Link>
       </div>
 
       {/* Right */}

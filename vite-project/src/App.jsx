@@ -17,6 +17,7 @@ import BookTour from "./Pages/BookTour"
 import Destination from "./Pages/Destination"
 import TopDestinations from "./Components/TopDestinations"
 import BookPopularPackage from "./Pages/BookPopularPackage"
+import Gallery from "./Pages/Gallery"
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         </Route>
 
         <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery/>} />
         <Route path="/destination" element={<Destination/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>

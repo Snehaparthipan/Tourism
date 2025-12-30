@@ -4,6 +4,7 @@ import "../CSS/booktour.css";
 import API from "../Utills/API";
 // import { destinations } from "../Components/TopDestinations";
 import { destinations } from "../Pages/Destination"
+import Navbar from "../Components/Navbar";
 
 export default function BookTour() {
   const { id } = useParams();
@@ -64,6 +65,8 @@ export default function BookTour() {
   };
 
   return (
+    <>
+    <Navbar/>
     <section className="bt-wrapper">
       <div className="bt-card">
         <div className="bt-image-box">
@@ -105,5 +108,6 @@ export default function BookTour() {
         </div>
       </div>
     </section>
+    </>
   );
 }

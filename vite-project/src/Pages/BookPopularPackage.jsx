@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../CSS/booktour.css";
 import API from "../Utills/API";
 import { packages } from "../Components/PopularPackage"; // your package array
+import Navbar from "../Components/Navbar";
 
 export default function BookPopularPackage() {
   const { id } = useParams();
@@ -45,6 +46,8 @@ const handleBooking = async () => {
 
 
   return (
+    <>
+    <Navbar/>
     <section className="bt-wrapper">
       <div className="bt-card">
         <div className="bt-image-box">
@@ -67,5 +70,6 @@ const handleBooking = async () => {
         </div>
       </div>
     </section>
+    </>
   );
 }

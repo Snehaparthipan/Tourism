@@ -31,7 +31,7 @@ export default function Home() {
         {/* <h4>welcome back {username} </h4> */}
         <h2 className="quote">Explore the Colourful World</h2>
         <div className="line"></div>
-        <button className="ex-btn" onClick={()=>navigate("/topdestination")}>Explore</button>
+        <button className="ex-btn" onClick={()=>navigate("/destination")}>Explore</button>
       </div>
 
 
