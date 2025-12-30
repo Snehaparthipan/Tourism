@@ -63,9 +63,10 @@ export default function Train() {
     setToSelected(false);
   }, [from]);
 
+  /* BOOK NOW */
   const handleBook = () => {
     if (!from || !to || !date) {
-      alert("Please select From and To and date");
+      alert("Please select From, To and Date");
       return;
     }
 
@@ -74,10 +75,13 @@ export default function Train() {
       return;
     }
 
-    navigate("/book", {
-      state: { from, to, travellers }
+    const placeId = "101"; // demo id
+
+    navigate(`/Tseat/${placeId}`, {
+      state: { from, to, date, travellers }
     });
   };
+
 
   const totalTravellers =
     travellers.adults + travellers.children + travellers.infants;

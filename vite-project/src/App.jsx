@@ -19,6 +19,7 @@ import TopDestinations from "./Components/TopDestinations"
 import BookPopularPackage from "./Pages/BookPopularPackage"
 import Gallery from "./Pages/Gallery"
 import ScrollToTop from "./Components/ScrollToTop"
+import TseatSelection from "./Pages/TseatSelection"
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/profile" element={<Profile/>} />
         <Route path="/bookhotel" element={<Bookhotel/>}/>
         <Route path="/SeatSelection/:placeId" element={<SeatSelection />} />
+        <Route path="/Tseat/:placeId" element={<TseatSelection/>}/>
         <Route path="/explore/:id" element={<BookTour />} />
         <Route path="/topdestination" element={<TopDestinations/>} />
         <Route path="/popular/book/:id" element={<BookPopularPackage/>} />
