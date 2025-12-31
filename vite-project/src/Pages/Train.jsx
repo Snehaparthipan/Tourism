@@ -16,6 +16,8 @@ export default function Train() {
 
   const [fromSelected, setFromSelected] = useState(false);
   const [toSelected, setToSelected] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+const [loading, setLoading] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
   const [openTravellers, setOpenTravellers] = useState(false);
@@ -23,7 +25,7 @@ export default function Train() {
     adults: 1,
     children: 0,
     infants: 0,
-    class: "Economy"
+    class: "UR-General"
   });
   useEffect(() => {
     if (!from || fromSelected) {
@@ -63,24 +65,77 @@ export default function Train() {
     setToSelected(false);
   }, [from]);
 
-  /* BOOK NOW */
+  // /* BOOK NOW */
+  // const handleBook = () => {
+  //   if (!from || !to || !date) {
+  //     alert("Please select From, To and Date");
+  //     return;
+  //   }
+
+  //   if (from === to) {
+  //     alert("From and To cannot be the same");
+  //     return;
+  //   }
+
+  //   const placeId = "100"; // demo id
+
+  //   navigate(`/Tseat/${placeId}`, {
+  //     state: { from, to, date, travellers }
+  //   });
+  // };
+
   const handleBook = () => {
-    if (!from || !to || !date) {
-      alert("Please select From, To and Date");
-      return;
-    }
+  if (!from || !to || !date) {
+    alert("Please select From, To and Date");
+    return;
+  }
 
-    if (from === to) {
-      alert("From and To cannot be the same");
-      return;
-    }
+  if (from === to) {
+    alert("From and To cannot be the same");
+    return;
+  }
 
-    const placeId = "101"; // demo id
+  setOpenDialog(true); // 👈 OPEN DIALOG
+};
 
-    navigate(`/Tseat/${placeId}`, {
-      state: { from, to, date, travellers }
-    });
-  };
+const confirmBooking = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Please login first");
+    navigate("/login");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    await API.post(
+      "/api/trainbook",
+      {
+        placeId: "100", // or actual train id
+        from,
+        to,
+        date,
+        travellers
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Train Booking Confirmed 🚆");
+    setOpenDialog(false);
+
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Booking failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
   const totalTravellers =
@@ -174,6 +229,30 @@ return (
 <button className="bookbtn" onClick={handleBook}>Book Now</button>
 </div >
 </div >
+
+{openDialog && (
+  <div className="modal-overlay">
+    <div className="modal-box">
+
+      <h3>Confirm Train Booking</h3>
+
+      <p><b>From:</b> {from}</p>
+      <p><b>To:</b> {to}</p>
+      <p><b>Date:</b> {date}</p>
+      <p><b>Travellers:</b> {travellers.adults + travellers.children + travellers.infants}</p>
+      <p><b>Class:</b> {travellers.class}</p>
+
+      <div className="modal-actions">
+        <button onClick={() => setOpenDialog(false)}>Cancel</button>
+        <button onClick={confirmBooking} disabled={loading}>
+          {loading ? "Booking..." : "Confirm"}
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+
 </div >
     
   );

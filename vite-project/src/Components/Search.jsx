@@ -14,7 +14,7 @@ function Search() {
             <MdFlightTakeoff /> Flights
           </NavLink>
 
-          <NavLink to="/home/hotel" className="nav">
+          {/* <NavLink to="/home/hotel" className="nav">
             <FaBuilding /> Hotels
           </NavLink>
 
@@ -24,7 +24,7 @@ function Search() {
 
           <NavLink to="/home/car" className="nav">
             <IoCarSport /> Cars
-          </NavLink>
+          </NavLink> */}
 
         </div>
       </div>

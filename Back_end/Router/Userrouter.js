@@ -3,7 +3,6 @@ const {postUser,getuser,deleteuser,putUser,flight,postflight}=require("../Contro
 const {searchPlace, searchHotel, searchCars,searchTrain}=require("../Controller/BookingController")
 const{ Register, Loginuser }=require('../Controller/Logincontroller')
 const{ getSeats,bookSeats }=require("../Controller/SeatController")
-const{getTSeats,bookTSeats}=require("../Controller/TBookingController")
 const { getRooms, bookRoom } = require("../Controller/Roomcontroller");
 const{VerifyToken}=require("../Middlewere/token")
 const{ bookPackage,getMyPackages,cancelPackage}=require("../Controller/PackageController")
@@ -39,13 +38,13 @@ router.get('/test' , VerifyToken , (req , res)=>{
 //for flight seats
 
 router.get("/seats/:placeId", getSeats);
-router.post("/seats/book", VerifyToken, bookSeats);
+router.post("/seats/tbook", VerifyToken, bookSeats);
 
 
 //for train booking
 
-router.get("/tseat/:placeId",getTSeats)
-router.post("/tseat/book",bookTSeats)
+// router.get("/tseat/:placeId",getTSeats)
+// router.post("/tseat/book",VerifyToken,bookTSeats)
 
 //for hotal room 
 
@@ -153,6 +152,5 @@ router.delete("/popular/cancel/:id", VerifyToken, async (req, res) => {
     res.status(500).json({ message: "Cancel failed" });
   }
 });
-
 
 module.exports=router
