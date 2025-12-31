@@ -38,7 +38,7 @@ router.get('/test' , VerifyToken , (req , res)=>{
 //for flight seats
 
 router.get("/seats/:placeId", getSeats);
-router.post("/seats/tbook", VerifyToken, bookSeats);
+router.post("/seats/book", VerifyToken, bookSeats);
 
 
 //for train booking
